@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SQLite;
-using System.Diagnostics;
-using System.Dynamic;
 using ToDoList.Models;
 using ToDoList.Models.ViewModels;
 
@@ -57,13 +55,15 @@ namespace ToDoList.Controllers
             return new TodoViewModel { Todos = todos };
         }
 
+        [HttpPost]
         public RedirectResult Insert(Todo todo)
         {
             using SQLiteConnection con = new("Data Source=db.sqlite");
             using var tableCmd = con.CreateCommand();
 
             con.Open();
-            tableCmd.CommandText = $"INSERT INTO TODO (Name) VALUES ('{todo.Name}')";
+            tableCmd.CommandText = $"INSERT INTO TODO (Name) VALUES (@Name)";
+            tableCmd.Parameters.AddWithValue("@Name", todo.Name);
 
             try
             {
@@ -83,7 +83,8 @@ namespace ToDoList.Controllers
             using var tableCmd = con.CreateCommand();
 
             con.Open();
-            tableCmd.CommandText = $"DELETE FROM TODO WHERE Id = {id}";
+            tableCmd.CommandText = $"DELETE FROM TODO WHERE Id = @Id";
+            tableCmd.Parameters.AddWithValue("@Id", id);
 
             try
             {
@@ -110,7 +111,8 @@ namespace ToDoList.Controllers
             using var tableCmd = con.CreateCommand();
 
             con.Open();
-            tableCmd.CommandText = $"SELECT * FROM TODO WHERE Id = {id}";
+            tableCmd.CommandText = $"SELECT * FROM TODO WHERE Id = @Id";
+            tableCmd.Parameters.AddWithValue("@Id", id);
 
             try
             {
@@ -145,7 +147,9 @@ namespace ToDoList.Controllers
             using var tableCmd = con.CreateCommand();
 
             con.Open();
-            tableCmd.CommandText = $"UPDATE TODO SET Name = '{todo.Name}' WHERE Id = {todo.Id}";
+            tableCmd.CommandText = $"UPDATE TODO SET Name = @Name WHERE Id = @Id";
+            tableCmd.Parameters.AddWithValue("@Id", todo.Id);
+            tableCmd.Parameters.AddWithValue("@Name", todo.Name);
 
             try
             {
