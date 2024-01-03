@@ -1,0 +1,15 @@
+﻿@model TodoViewModel
+
+<form asp-action="Insert" id="form-action" method="post" class="form-horizontal mb-3" role="form">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row justify-content-center">
+        <div class="col-10">
+            <input asp-for="Todo.Id" type="hidden" class="form-control" />
+            <input asp-for="Todo.Name" class="form-control"/>
+            <span asp-validation-for="Todo.Name" class="text-danger"></span>
+        </div>
+        <div class="col-2">
+            <input type="submit" id="form-button" class="btn btn-success" value="Añadir" />
+        </div>
+    </div>
+</form>

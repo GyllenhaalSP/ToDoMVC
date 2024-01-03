@@ -1,0 +1,28 @@
+﻿@model TodoViewModel
+
+<div class="row justify-content-center">
+    <div class="col-12">
+        <table class="table">
+        <thead>
+                <tr class="table-primary">
+                    <th scope="col">#</th>
+                    <th scope="col">Tarea</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var todo in Model.Todos)
+                {
+                    <tr>
+                        <td class="todos-column" scope="row">@todo.Id</td>
+                        <td class="todos-column">@todo.Name</td>
+                        <td class="buttons-column">
+                            <input type="submit" class="btn btn-primary" value="Actualizar" onclick="populateForm(@todo.Id)" />
+                            <input type="submit" class="btn btn-danger" value="Borrar" onclick="deleteTodo(@todo.Id)" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
